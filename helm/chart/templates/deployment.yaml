@@ -1,34 +1,29 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}-deployment
+  name: test-app
   labels:
-    app: {{ .Release.Name }}
-    revision: "{{ .Values.revision }}"  # Add revision label
+    app: test-app
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ .Release.Name }}
+      app: test-app
   template:
     metadata:
       labels:
-        app: {{ .Release.Name }}
-        revision: "{{ .Values.revision }}"  # Add revision label inside pod metadata
+        app: test-app
     spec:
       containers:
-        - name: {{ .Release.Name }}-container
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          ports:
-            - containerPort: {{ .Values.service.port }}
-          env:
-            - name: PORT
-              value: "{{ .Values.env.PORT }}"
-            - name: MONGODB_URI
-              valueFrom:
-                configMapKeyRef:
-                  name: {{ .Release.Name }}-config
-                  key: MONGODB_URI
-          resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+      - name: test-app
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        ports:
+        - containerPort: 3000
+        resources:
+          limits:
+            cpu: {{ .Values.resources.limits.cpu }}
+            memory: {{ .Values.resources.limits.memory }}
+          requests:
+            cpu: {{ .Values.resources.requests.cpu }}
+            memory: {{ .Values.resources.requests.memory }}
+

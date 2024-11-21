@@ -1,6 +1,7 @@
 apiVersion: v2
-name: nodejs-app
-description: A Helm chart for a Node.js backend application
+name: test-app
+description: A Helm chart for deploying the Test App
 version: 1.0.0
 appVersion: "1.0.0"
+
 
