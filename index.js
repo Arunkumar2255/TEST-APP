@@ -13,8 +13,9 @@ app.use(morgan("common"));
 app.use('/persons', rescue(router.personsRouter))
 app.use(errorMiddleware)
 
-app.listen(process.env.APP_PORT, () => {
-  console.log(`Running on ${process.env.APP_PORT}`);
+const port = process.env.APP_PORT || 5003
+app.listen(port, () => {
+  console.log(`Running on ${port}`);
 });
 
 module.exports = app;

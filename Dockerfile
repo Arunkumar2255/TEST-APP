@@ -1,14 +1,22 @@
-FROM node
-WORKDIR /app
-COPY ./src ./src
-COPY package.json package-lock.json ./
-RUN npm ci --production
-
-ENV \
-    APP_PORT=3000 \
-    MYSQL_HOST=localhost \
-    MYSQL_PORT=3306 \
-    MYSQL_USER=root \
-    MYSQL_PASSWORD=root
-
-CMD [ "node", "src/index.js" ]
+FROM node:alpine
+ 
+RUN apk update && apk upgrade && \
+    apk add --no-cache bash git openssh
+ 
+RUN mkdir -p /usr/src/node-app && chown -R node:node /usr/src/node-app
+ 
+WORKDIR /usr/src/node-app
+ 
+COPY . ./
+ 
+USER node
+ 
+ 
+COPY --chown=node:node . .
+ 
+RUN npm install
+ 
+EXPOSE 5003
+ 
+CMD [ "node", "index.js" ]
+ 
